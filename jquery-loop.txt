@@ -1,0 +1,53 @@
+
+  //save to database
+  $('#save').click(function(e){
+	
+e.preventDefault(); // Prevent Default Submission
+  var pproduct_Name = [];
+  var bbarCode		= [];
+  var bbatch		= [];
+  var sell_price	= [];
+  var pro_qty	 	= [];
+  var sub_total		= [];
+  
+  var ttable = document.getElementById("table");
+  
+ //loop thru the table cells and append products to array variable
+ $(cell1).each(function(){
+   pproduct_Name.push($(this).text());
+  });
+  
+  $(cell2).each(function(){
+   bbarCode.push($(this).text());
+  });
+  
+   $(cell3).each(function(){
+   bbatch.push($(this).text());
+  });
+  
+  $(cell4).each(function(){
+   sell_price.push($(this).text());
+  });
+  
+  $(cell5).each(function(){
+   pro_qty.push($(this).text());
+  });
+  
+  $(cell6).each(function(){
+   sub_total.push($(this).text());
+  });
+  
+  $.ajax({
+   url:"processing/process_sell.php",
+   method:"POST",
+   data:{pproduct_Name:pproduct_Name, bbarCode:bbarCode, bbatch:bbatch, sell_price:sell_price, pro_qty:pro_qty, sub_total:sub_total},
+   success:function(data)
+   {
+		$('#submit_output').fadeOut('slow', function(){
+          	$('#submit_output').fadeIn('slow').html(data); //display php echo in this element
+          	$("#sell_product_frm").trigger("reset"); //reset the form after submission
+          
+        });
+        
+   }
+  });
